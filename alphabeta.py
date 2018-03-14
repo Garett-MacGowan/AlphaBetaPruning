@@ -20,19 +20,40 @@ import math
 inf = math.inf
 
 def main():
-    pass
+    graphsAsStrings = fileRead("alphabeta.txt")
+    solutionStrings = []
+    for graphAsString in graphsAsStrings:
+        graph = graphParser(graphAsString)
+        solution = alphaBetaPruning(graph)
+        solutionStrings.append(solution)
+    writeSolutionsToFile("alphabeta_out.txt", solutionStrings)
 
 # takes file name and returns list of graphs as strings ["set1 set2", "set1 set2"] 
 def fileRead(filename):
+    graphsAsStrings = []
+    with open(filename, "r") as f:
+        for line in f:
+            graphAsString = line.rstrip()
+            graphsAsStrings.append(graphAsString)
+    return graphsAsStrings
+
+# takes a filename and the solution to the solved problems in the form of a list of strings
+# the strings are of the form "Graph 1: Score: 4; Leaf Nodes Examined: 6"
+# writes the solutions line by line to the given filename
+def writeSolutionsToFile(filename, solutionStrings):
+    with open(filename, "w") as f:
+        f.write('\n'.join(solutionsAsString))
     pass
 
 # takes a graph as a string of two sets and returns the graph as
 # {("node":{("MAX": True/False), (children: ["child1","child2"])})}
 def graphParser(graphAsString):
+    
     pass
 
 # takes a graph as a dict of dicts and decides whether to call min or max based
 # on the first node
+# returns 
 def alphaBetaPruning(graph):
     pass
 
@@ -62,11 +83,11 @@ def max(graph, currentNode, alpha, beta):
 # NOT NEEDED PROBABLY
 # this function takes the graph and a node to prune
 # it returns the graph without the node and all of its descendents
-#def prune(graph, nodeToPrune):
-#    pass
+# def prune(graph, nodeToPrune):
+#     pass
 
 
-
+main()
 
 
 
