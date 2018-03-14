@@ -4,8 +4,8 @@ graph to be represented as dicts within a dict.
 
 Using example from assignment:
 {
-    ("A": {("MAX": True), ("children": ["B","C"]) }),
-    ("B": {("MAX": False), ("children": ["D","E"]) })
+    "A": {  "MAX": True,  "children": ["B","C"]  },
+    "B": {  "MAX": False, "children": ["D","E"]  }
 }
 
 quick copy-paste section:
@@ -18,6 +18,7 @@ quick copy-paste section:
 import math
 
 inf = math.inf
+leavesVisited = 0
 
 def main():
     pass
@@ -34,29 +35,77 @@ def graphParser(graphAsString):
 # takes a graph as a dict of dicts and decides whether to call min or max based
 # on the first node
 def alphaBetaPruning(graph):
+    global leavesVisited
+    leavesVisited = 0
     pass
 
 # this function attempts to minimize the score
 # takes a graph, the current node, the alpha and beta values
 # calls max() for each of its children to allow for taking turns
-# calls prune() when max() returns a value that is less than or equal to alpha
+############ calls prune() when max() returns a value that is less than or equal to alpha
 # returns the minimum value that it finds
-def min(graph, currentNode, alpha, beta):
+def minNode(graph, currentNode, alpha, beta):
+    global leavesVisited
     # alpha = best already explored node along the path to the root for maximizer (max() function)
     # beta = best already explored node along the path to the root for minimizer (min() function)
+    # if currentNode is not an int it has no children, so it must be a leaf
+    # if currentNode is a leaf node, return this value
+    if representsInt(currentNode):
+        leavesVisited += 1
+        return currentNode
+
+    # initially set to infinity
     val = inf
-    pass
+    newBeta = beta
+
+    # currentNode is a child and had its own children (not a leaf node)
+    children = graph[currentNode]['children']
+    for child in children:
+        currentVal = maxNode(graph, child, alpha, newBeta)
+        if currentVal < val:
+            val = currentVal
+        elif currentVal < alpha or currentVal == alpha:
+            return val
+        elif currentVal < newBeta:
+            newBeta = currentVal
+    return val
+
+
+
+""" {    "A": {  "MAX": True,  "children": ["B","C"]  },     "B": {  "MAX": False, "children": ["D","E"]  }      } """
+
+
 
 # this function attempts to maximize the score
 # takes a graph, the current node, the alpha and beta values
 # calls max() for each of its children to allow for taking turns
-# calls prune() when min() returns a value that is greater than or equal to beta
+############# calls prune() when min() returns a value that is greater than or equal to beta
 # returns the maximum value that it finds
-def max(graph, currentNode, alpha, beta):
+def maxNode(graph, currentNode, alpha, beta):
+    global leavesVisited
     # alpha = best already explored node along the path to the root for maximizer (max() function)
     # beta = best already explored node along the path to the root for minimizer (min() function)
+    # if currentNode is not an int it has no children, so it must be a leaf
+    # if currentNode is a leaf node, return this value
+    if representsInt(currentNode):
+        leavesVisited += 1
+        return currentNode
+
+    # initially set to infinity
     val = -inf
-    pass
+    newAlpha = alpha
+
+    # currentNode is a child and had its own children (not a leaf node)
+    children = graph[currentNode]['children']
+    for child in children:
+        currentVal = minNode(graph, child, newAlpha, beta)
+        if currentVal > val:
+            val = currentVal
+        elif currentVal > beta or currentVal == beta:
+            return val
+        elif currentVal > newAlpha:
+            newAlpha = currentVal
+    return val
 
 
 # NOT NEEDED PROBABLY
@@ -66,10 +115,17 @@ def max(graph, currentNode, alpha, beta):
 #    pass
 
 
+def representsInt(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 
 
 
 
 
-                              
+
+
