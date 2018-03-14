@@ -22,10 +22,13 @@ inf = math.inf
 def main():
     graphsAsStrings = fileRead("alphabeta.txt")
     solutionStrings = []
+    graphCount = 1
     for graphAsString in graphsAsStrings:
         graph = graphParser(graphAsString)
         solution = alphaBetaPruning(graph)
-        solutionStrings.append(solution)
+        fullSolution = "Graph " + str(graphCount) + ": " + solution
+        solutionStrings.append(fullSolution)
+        graphCount += 1
     writeSolutionsToFile("alphabeta_out.txt", solutionStrings)
 
 # takes file name and returns list of graphs as strings ["set1 set2", "set1 set2"] 
@@ -42,18 +45,93 @@ def fileRead(filename):
 # writes the solutions line by line to the given filename
 def writeSolutionsToFile(filename, solutionStrings):
     with open(filename, "w") as f:
-        f.write('\n'.join(solutionsAsString))
-    pass
+        f.write('\n'.join(solutionStrings))
 
 # takes a graph as a string of two sets and returns the graph as
-# {("node":{("MAX": True/False), (children: ["child1","child2"])})}
+# { "node":{ "MAX": True/False, children:["child1","child2"] } }
 def graphParser(graphAsString):
+    splitGraph = graphAsString.split()
+    nodeTypesString = splitGraph[0]
+    graphEdgesString = splitGraph[1]
+    graph = {}
+
+    # process the nodes and their types
+    newNode = ""
+    nodeType = ""
+    state = 0
+    # state 0 is the initial state
+    # state 1 is getting the name of the node
+    # state 2 is getting the type of the node
+    for char in nodeTypesString:
+
+        if state == 0:
+            if char == "(":
+                # '(' indicates next char is the start of the node's name
+                state = 1
+                # reset our holders for the name and type of the node
+                newNode = ""
+                nodeType = ""
+            elif char == "," or char == "}":
+                # use this time to create the new node in the dict
+                if nodeType == "MAX":
+                    graph[newNode] = { "MAX":True, "children":[] }
+                elif nodeType == "MIN":
+                    graph[newNode] = { "MAX":False, "children":[] }
+        elif state == 1:
+            if char == ",":
+                # comma indicates end of node name and start of node type next char
+                state = 2
+            else:
+                newNode = newNode + char
+        elif state == 2:
+            if char == ")":
+                # ')' indicates end of node type
+                state = 0
+            else:
+                nodeType = nodeType + char
     
-    pass
+    # process the edges of the graph by populating the "children" lists
+    currentNode = ""
+    child = ""
+    state = 0
+    # state 0 is the initial state
+    # state 1 is getting the name of the node
+    # state 2 is getting the child of the node
+    for char in graphEdgesString:
+
+        if state == 0:
+            if char == "(":
+                # '(' indicates next char is the start of the node's name
+                state = 1
+                # reset our holders for the name and type of the node
+                currentNode = ""
+                child = ""
+            elif char == "," or char == "}":
+                # use this time to add the child to the current node's children
+                if representsInt(child):
+                    #print("appending child as int: ", child)
+                    graph[currentNode]["children"].append(int(child))
+                else:
+                    #print("appending child as string: ", child)
+                    graph[currentNode]["children"].append(child)
+        elif state == 1:
+            if char == ",":
+                # comma indicates end of node name and start of child next char
+                state = 2
+            else:
+                currentNode = currentNode + char
+        elif state == 2:
+            if char == ")":
+                # ')' indicates end of child
+                state = 0
+            else:
+                child = child + char
+    #print (graph)
+    return graph
 
 # takes a graph as a dict of dicts and decides whether to call min or max based
 # on the first node
-# returns 
+# returns the solution in the form of "Score: 4; Leaf Nodes Examined: 6"
 def alphaBetaPruning(graph):
     pass
 
@@ -86,6 +164,12 @@ def max(graph, currentNode, alpha, beta):
 # def prune(graph, nodeToPrune):
 #     pass
 
+def representsInt(s):
+    try: 
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 main()
 
