@@ -38,9 +38,14 @@ def main():
 def fileRead(filename):
     graphsAsStrings = []
     with open(filename, "r") as f:
+        lineSkipper = False
         for line in f:
-            graphAsString = line.rstrip()
-            graphsAsStrings.append(graphAsString)
+            if lineSkipper == False:
+                graphAsString = line.rstrip()
+                graphsAsStrings.append(graphAsString)
+                lineSkipper = True
+            else:
+                lineSkipper = False
     return graphsAsStrings
 
 # takes a filename and the solution to the solved problems in the form of a list of strings
@@ -63,7 +68,7 @@ def graphParser(graphAsString):
     nodeType = ""
     state = 0
     foundRoot = False # keep track of whether the root has been found
-# state 0 is the initial state
+    # state 0 is the initial state
     # state 1 is getting the name of the node
     # state 2 is getting the type of the node
     for char in nodeTypesString:
@@ -167,7 +172,7 @@ def minNode(graph, currentNode, alpha, beta):
         currentVal = maxNode(graph, child, alpha, newBeta)
         if currentVal < val:
             val = currentVal
-        elif currentVal < alpha or currentVal == alpha:
+        if currentVal < alpha or currentVal == alpha:
             return val
         elif currentVal < newBeta:
             newBeta = currentVal
@@ -198,7 +203,9 @@ def maxNode(graph, currentNode, alpha, beta):
         currentVal = minNode(graph, child, newAlpha, beta)
         if currentVal > val:
             val = currentVal
-        elif currentVal > beta or currentVal == beta:
+        if currentVal > beta or currentVal == beta:
+            #print("Pruning")
+            #print("Child: ", child, " ")
             return val
         elif currentVal > newAlpha:
             newAlpha = currentVal

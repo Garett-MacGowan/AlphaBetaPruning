@@ -1,0 +1,7 @@
+{(A,MAX),(B,MIN),(C,MIN),(D,MAX),(E,MAX),(F,MAX),(G,MAX)} {(A,B),(A,C),(B,D),(B,E),(C,F),(C,G),(D,4),(D,3),(E,2),(E,7),(F,3),(F,2),(G,2),(G,8)}
+
+{(A,MAX),(B,MIN),(C,MIN),(D,MAX),(E,MAX),(F,MAX),(G,MAX)} {(A,B),(A,C),(B,D),(B,E),(C,F),(C,G),(D,1),(D,4),(E,9),(E,2),(F,-1),(F,4),(G,3),(G,7)}
+
+{(A,MAX),(B,MIN),(C,MIN),(D,MAX),(E,MAX),(F,MAX),(G,MAX),(H,MIN),(I,MIN),(J,MIN),(K,MIN),(L,MIN),(M,MIN),(N,MIN),(O,MIN)} {(A,B),(A,C),(B,D),(B,E),(C,F),(C,G),(D,H),(D,I),(E,J),(E,K),(F,L),(F,M),(G,N),(G,O),(H,2),(H,1),(I,4),(I,5),(J,5),(J,2),(K,8),(K,6),(L,7),(L,11),(M,21),(M,4),(N,0),(N,2),(O,9),(O,0)}
+
+{(AA,MAX),(AB,MIN),(AC,MIN),(AD,MAX),(AE,MAX),(AF,MAX),(AG,MAX),(AH,MIN),(AI,MIN),(AJ,MIN),(AK,MIN),(AL,MIN),(AM,MIN),(AN,MIN),(AO,MIN),(AP,MAX),(AQ,MAX),(AR,MAX),(AS,MAX),(AT,MAX),(AU,MAX),(AV,MAX),(AW,MAX),(AX,MAX),(AY,MAX),(AZ,MAX),(BA,MAX),(BB,MAX),(BC,MAX),(BD,MAX),(BE,MAX)} {(AA,AB),(AA,AC),(AB,AD),(AB,AE),(AC,AF),(AC,AG),(AD,AH),(AD,AI),(AE,AJ),(AE,AK),(AF,AL),(AF,AM),(AG,AN),(AG,AO),(AH,AP),(AH,AQ),(AI,AR),(AI,AS),(AJ,AT),(AJ,AU),(AK,AV),(AK,AW),(AL,AX),(AL,AY),(AM,AZ),(AM,BA),(AN,BB),(AN,BC),(AO,BD),(AO,BE),(AP,1),(AP,3),(AQ,9),(AQ,2),(AR,7),(AR,6),(AS,5),(AS,5),(AT,9),(AT,4),(AU,1),(AU,1),(AV,2),(AV,3),(AW,3),(AW,6),(AX,7),(AX,-2),(AY,11),(AY,3),(AZ,0),(AZ,-1),(BA,3),(BA,9),(BB,-1),(BB,-11),(BC,2),(BC,2),(BD,8),(BD,-5),(BE,4),(BE,5)}
