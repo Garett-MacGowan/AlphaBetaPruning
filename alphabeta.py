@@ -1,6 +1,6 @@
 """
-graph to be represented as dicts within a dict.
-{("node":{("MAX": True/False), (children: ["child1","child2"])})}
+Below, graphs are represented as dictionaries within a dictionary:
+    { "node": { "MAX": True/False , children: ["child1","child2"] } }
 
 Using example from assignment:
 {
@@ -20,6 +20,7 @@ import math
 inf = math.inf
 leavesVisited = 0
 
+
 def main():
     graphsAsStrings = fileRead("alphabeta.txt")
     solutionStrings = []
@@ -34,7 +35,11 @@ def main():
         graphCount += 1
     writeSolutionsToFile("alphabeta_out.txt", solutionStrings)
 
-# takes file name and returns list of graphs as strings ["set1 set2", "set1 set2"] 
+
+"""
+This function takes a file name and returns a list of graphs
+as strings of the form ["set1 set2", "set1 set2"].
+"""
 def fileRead(filename):
     graphsAsStrings = []
     with open(filename, "r") as f:
@@ -48,15 +53,23 @@ def fileRead(filename):
                 lineSkipper = False
     return graphsAsStrings
 
-# takes a filename and the solution to the solved problems in the form of a list of strings
-# the strings are of the form "Graph 1: Score: 4; Leaf Nodes Examined: 6"
-# writes the solutions line by line to the given filename
+
+"""
+This function takes a filename and the solution to the solved
+problems in the form of a list of strings. The strings are of
+the form "Graph 1: Score: 4; Leaf Nodes Examined: 6". It then
+writes the solutions line by line to the given filename.
+"""
 def writeSolutionsToFile(filename, solutionStrings):
     with open(filename, "w") as f:
         f.write('\n'.join(solutionStrings))
 
-# takes a graph as a string of two sets and returns the graph as
-# { "node":{ "MAX": True/False, children:["child1","child2"] } } and the root
+
+"""
+This function takes a graph as a string of two sets. It returns
+the the graph and the root. The returned graph is of the form
+{ "node":{ "MAX":True/False, children:["child1", "child2"] } }
+"""
 def graphParser(graphAsString):
     splitGraph = graphAsString.split()
     nodeTypesString = splitGraph[0]
@@ -139,9 +152,11 @@ def graphParser(graphAsString):
     return [graph, root]
 
 
-# takes a graph as a dict of dicts and decides whether to call min or max based
-# on the first node
-# returns the solution in the form of "Score: 4; Leaf Nodes Examined: 6"
+"""
+This function takes a graph as a dictionary of dictionaries. It decides
+whether to call minNode() or maxNode() based on the first node. It then
+returns the solution in the form of "Score: 4; Leaf Nodes Examined: 6"
+"""
 def alphaBetaPruning(graph, root):
     global leavesVisited
     leavesVisited = 0
@@ -149,10 +164,12 @@ def alphaBetaPruning(graph, root):
     result = "Score: " + str(score) + "; Leaf Nodes Examined: " + str(leavesVisited)
     return result
 
-# this function attempts to minimize the score
-# takes a graph, the current node, the alpha and beta values
-# calls max() for each of its children to allow for taking turns
-# returns the minimum value that it finds
+
+"""
+This function attempts to minimize the score. It takes a graph, the current
+node and the alpha and beta values. It also calls maxNode() for each of its
+children to allow for taking turns. It returns the minimum value that it finds.
+"""
 def minNode(graph, currentNode, alpha, beta):
     # alpha = best already explored node along the path to the root for maximizer (max() function)
     # beta = best already explored node along the path to the root for minimizer (min() function)
@@ -179,14 +196,14 @@ def minNode(graph, currentNode, alpha, beta):
     return val
 
 
-
-# this function attempts to maximize the score
-# takes a graph, the current node, the alpha and beta values
-# calls max() for each of its children to allow for taking turns
-# returns the maximum value that it finds
+"""
+This function attempts to maximize the score. It takes a graph, the current
+node and the alpha and beta values. It also calls maxNode() for each of its
+children to allow for taking turns. It returns the maximum value that it finds.
+"""
 def maxNode(graph, currentNode, alpha, beta):
-    # alpha = best already explored node along the path to the root for maximizer (max() function)
-    # beta = best already explored node along the path to the root for minimizer (min() function)
+    # alpha = best already explored node along the path to the root for the maximizer (maxNode() function)
+    # beta = best already explored node along the path to the root for the minimizer (minNode() function)
     global leavesVisited
     # if currentNode is not an int it has no children, so it must be a leaf
     # if currentNode is a leaf node, return this value
@@ -204,21 +221,23 @@ def maxNode(graph, currentNode, alpha, beta):
         if currentVal > val:
             val = currentVal
         if currentVal > beta or currentVal == beta:
-            #print("Pruning")
-            #print("Child: ", child, " ")
             return val
         elif currentVal > newAlpha:
             newAlpha = currentVal
     return val
 
 
-
+"""
+This function returns true if its input is an integer and false
+otherwise. It is a helper function for minNode() and maxNode().
+"""
 def representsInt(s):
     try:
         int(s)
         return True
     except ValueError:
         return False
+
 
 main()
 
